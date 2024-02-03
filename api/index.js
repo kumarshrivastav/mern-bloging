@@ -1,12 +1,23 @@
-import express from "express"
-import dotenv from "dotenv"
-import ConnectDB from "./db.js"
-import userRouter from "./routes/user.routes.js"
+import express from "express";
+import dotenv from "dotenv";
+import ConnectDB from "./db.js";
+import userRouter from "./routes/user.routes.js";
+import authRouter from "./routes/auth.routes.js";
 dotenv.config();
-const app=express()
-ConnectDB()
+const app = express();
+ConnectDB();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api/user/", userRouter);
+app.use("/api/auth/", authRouter);
+const Server = app.listen(8000, () => {
+  console.log(`Server Started at http://localhost:${Server.address().port}`);
+});
 
-app.use("/api/users/",userRouter);
-const Server=app.listen(8000,()=>{
-    console.log(`Server Started at http://localhost:${Server.address().port}`)
-})
+app.use((error, req, res, next) => {
+  const statusCode = error.statusCode || 500;
+  const message = error.message || "Internal Serverr Error";
+  res
+    .status(statusCode)
+    .json({ Success: false, statusCode, message });
+});

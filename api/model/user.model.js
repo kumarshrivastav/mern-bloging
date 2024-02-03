@@ -10,8 +10,8 @@ const userModel=mongoose.models.users || mongoose.model("users",userSchema)
 
 const verifyUser=(user)=>{
     const joiSchema=Joi.object({
-        usernae:Joi.string().unique().min(5).max(20).required(),
-        usernae:Joi.string().unique().email().min(5).max(20).required(),
+        username:Joi.string().min(5).max(20).required(),
+        email:Joi.string().email().min(5).max(20).required(),
         password:Joi.string().required().min(5)
     })
 
