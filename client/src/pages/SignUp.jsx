@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { signUp } from "../http/api.config";
 const SignUp = () => {
@@ -9,27 +9,27 @@ const SignUp = () => {
     email: "",
   });
   // console.log(formData);
-  const [errorMessage,setErrorMessage]=useState(null)
-  const [isLoading,setIsLoading]=useState(false)
-  const navigate=useNavigate()
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!formData.username || !formData.password || !formData.email){
-      return setErrorMessage('please fill out all fields')
+    if (!formData.username || !formData.password || !formData.email) {
+      return setErrorMessage("please fill out all fields");
     }
     try {
-      setIsLoading(true)
-      setErrorMessage(null)
+      setIsLoading(true);
+      setErrorMessage(null);
       const { data } = await signUp(formData);
       console.log(data);
       setFormData({ username: "", password: "", email: "" });
       alert("User Registered Successfully");
-      return navigate("/sign-in")
+      return navigate("/sign-in");
     } catch (error) {
-      setErrorMessage(error.response.data.message)
+      setErrorMessage(error.response.data.message);
       console.log(error.response.data.message);
-    }finally{
-    setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -60,7 +60,10 @@ const SignUp = () => {
                 id="username"
                 value={formData.username}
                 onChange={(e) =>
-                  setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
+                  setFormData({
+                    ...formData,
+                    [e.target.id]: e.target.value.trim(),
+                  })
                 }
               />
             </div>
@@ -72,7 +75,10 @@ const SignUp = () => {
                 id="password"
                 value={formData.password}
                 onChange={(e) =>
-                  setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
+                  setFormData({
+                    ...formData,
+                    [e.target.id]: e.target.value.trim(),
+                  })
                 }
               />
             </div>
@@ -84,19 +90,26 @@ const SignUp = () => {
                 id="email"
                 value={formData.email}
                 onChange={(e) =>
-                  setFormData({ ...formData, [e.target.id]: e.target.value.trim() })
+                  setFormData({
+                    ...formData,
+                    [e.target.id]: e.target.value.trim(),
+                  })
                 }
               />
             </div>
-            <Button gradientDuoTone="purpleToPink" type="submit" disabled={isLoading}>
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={isLoading}
+            >
               {isLoading ? (
-                  <>
-                  <Spinner size="sm"/>
+                <>
+                  <Spinner size="sm" />
                   <span className="pl-3">Loading...</span>
-                  </>
-              ):"Sign Up"
-              }
-              
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
           </form>
           <div className="flex gap-2 text-sm mt-5">
@@ -105,11 +118,11 @@ const SignUp = () => {
               Sign In
             </Link>
           </div>
-          {
-            errorMessage && (
-              <Alert className="mt-5" color="failure">{errorMessage}</Alert>
-            )
-          }
+          {errorMessage && (
+            <Alert className="mt-5" color="failure">
+              {errorMessage}
+            </Alert>
+          )}
         </div>
       </div>
     </div>
