@@ -3,9 +3,15 @@ import dotenv from "dotenv";
 import ConnectDB from "./db.js";
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import cors from "cors"
 dotenv.config();
 const app = express();
+const corsOption={
+  credentials:true,
+  origin:["http://localhost:5173"]
+}
 ConnectDB();
+app.use(cors(corsOption))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/user/", userRouter);
