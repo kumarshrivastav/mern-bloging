@@ -6,10 +6,10 @@ class TokenService{
         return {accessToken,refreshToken}
     }
     verifyAccessToken(accessToken){
-        return jwt.verify(accessToken)
+        return jwt.verify(accessToken,process.env.ACCESS_TOKEN_JWT)
     }
     verifyRefreshToken(refreshToken){
-        return jwt.verify(refreshToken)
+        return jwt.verify(refreshToken,process.env.REFRESH_TOKEN_JWT)
     }
 }
 

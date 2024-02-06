@@ -3,7 +3,7 @@ import Joi from "joi";
 const userSchema = mongoose.Schema(
   {
     username: { type: String, required: true, unique: true, min: 5, max: 20 },
-    email: { type: String, required: true, unique: true, min: 5, max: 40 },
+    email: { type: String, required: true, unique: true, min: 5, max: 30 },
     password: { type: String, required: true, min: 5 },
     profilePicture: {
       type: String,
