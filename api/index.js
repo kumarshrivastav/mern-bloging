@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/user/", userRouter);
 app.use("/api/auth/", authRouter);
+app.use(express.static("http://localhost:5173/"))
 const Server = app.listen(8000, () => {
   console.log(`Server Started at http://localhost:${Server.address().port}`);
 });
