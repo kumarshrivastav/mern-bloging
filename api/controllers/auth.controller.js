@@ -87,6 +87,7 @@ class AuthController {
     }
   }
   async updateUser(req, res, next) {
+    // console.log(req.body)
     if (req.userId !== req.params.userId) {
       return next(ErrorHandler(403, "you are not allowed to update this user"));
     }
@@ -94,8 +95,8 @@ class AuthController {
       return next(ErrorHandler(401, "Password must be >=5 digits"));
     }
     const salt = await bcryptjs.genSalt(10);
-    if(req.body.password){
-      req.body.password = await bcryptjs.hash(req.body.password,salt)
+    if (req.body.password) {
+      req.body.password = await bcryptjs.hash(req.body.password, salt);
     }
     if (req.body.username) {
       if (req.body.username.length < 5 || req.body.username.length > 30) {
@@ -125,21 +126,38 @@ class AuthController {
         return next(ErrorHandler(400, "email only contains lowercase"));
       }
     }
+    // userModel.findByIdAndUpdate(req.params.userId,{
+    //   $set: {
+    //     username: req.body.username,
+    //     email: req.body.email,
+    //     profilePicture: req.body.profilePicture,
+    //     password: req.body.password,
+    //   }
+    // },{new:true},(err,doc)=>{
+    //   if(err){
+    //     return next(err)
+    //   }
+    //   console.log(doc)
+    //   const {password,...rest}=doc._doc
+    //   return res.status(200).send(rest)
+    // })
     try {
-      const updatedUser = await userModel.findByIdAndUpdate(
-        req.params.userId,
+      const updatedUser=await userModel.findByIdAndUpdate(
+        { _id: req.params.userId },
         {
           $set: {
             username: req.body.username,
             email: req.body.email,
-            profilePicture: req.body.profilePicture,
             password: req.body.password,
+            profilePicture: req.body.profilePicture,
           },
         },
         { new: true }
-      );
+      )
+     
+      // console.log(updatedUser);
       const { password, ...rest } = updatedUser._doc;
-      return res.status(200).send(rest);
+      return res.status(200).send(updatedUser);
     } catch (error) {
       return next(error);
     }

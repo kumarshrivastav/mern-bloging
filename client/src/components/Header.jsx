@@ -12,6 +12,12 @@ const Header = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const path = location.pathname;
+  const avatarCss={
+    height:'50px',
+    width:'50px',
+    borderRadius:'50%',
+    overflow:'hidden'
+}
   const {theme}=useSelector(state=>state.theme)
   return (
     <Navbar className="border-b-2">
@@ -50,7 +56,8 @@ const Header = () => {
             arrowIcon={false}
             inline
             label={
-              <Avatar alt="user" img={currentUser.profilePicture} rounded />
+              <img alt="user" src={currentUser.profilePicture} style={avatarCss} className="rounded"/>
+              // <Avatar alt="user" img={currentUser.profilePicture} rounded style={avatarCss}/>
             }
           >
             <Dropdown.Header>
