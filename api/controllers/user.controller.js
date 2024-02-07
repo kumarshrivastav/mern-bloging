@@ -33,6 +33,19 @@ class UserController{
         }
 
     }
+    async Delete(req,res,next){
+        if(req.userId!==req.params.userId){
+            return next(ErrorHandler(403,'You are not allowed to delete this user'))
+        }
+        try {
+            await userModel.findByIdAndDelete(req.params.userId)
+            res.clearCookie('accessToken')
+            res.clearCookie('refreshToken')
+            return res.status(200).send("User had been deleted")
+        } catch (error) {
+            return next(error)
+        }
+    }
 }
 
 export default new UserController;
