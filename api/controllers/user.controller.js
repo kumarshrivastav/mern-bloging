@@ -46,6 +46,15 @@ class UserController{
             return next(error)
         }
     }
+    async SingOut(req,res,next){
+        try {
+            res.clearCookie('accessToken')
+            res.clearCookie('refreshToken')
+            return res.status(200).send("User signout successfully")
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 export default new UserController;

@@ -17,11 +17,15 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  signoutUserFailure,
+  signoutUserStart,
+  signoutUserSuccess,
   updateFailure,
   updateStart,
   updateSuccess,
 } from "../redux/user/userSlice";
 import axios from "axios";
+import { signout } from "../http/api.config";
 const DashProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,6 +33,8 @@ const DashProfile = () => {
   const [imageFile, setImageFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [userSignoutSuccess,setUserSignoutSuccess]=useState(null)
+  const [userSignoutFailure,setUserSignoutFailure]=useState(null)
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const [updateUserError, setUpdateUserError] = useState(null);
@@ -133,6 +139,22 @@ const DashProfile = () => {
       return dispatch(deleteUserFailure(error.response.data.message));
     }
   };
+  const handleSignOut=async()=>{
+    setUserSignoutFailure(null)
+    setUserSignoutSuccess(null)
+    try {
+      dispatch(signoutUserStart())
+      const {data}=await signout();
+      alert(data)
+      setUserSignoutSuccess(data)
+      navigate("/sign-in")
+      return dispatch(signoutUserSuccess())
+    } catch (error) {
+      setUserSignoutFailure(error.response.data.message)
+      dispatch(signoutUserFailure(error.response.data.message))
+      console.log(error.response.data.message)
+    }
+  }
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -213,13 +235,24 @@ const DashProfile = () => {
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="cursor-pointer">Sign Out</span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
           {updateUserSuccess}
         </Alert>
       )}
+       {userSignoutSuccess && (
+        <Alert color="success" className="mt-5">
+          {userSignoutSuccess}
+        </Alert>
+      )}
+      {userSignoutFailure && (
+        <Alert color="failure" className="mt-5">
+          {userSignoutFailure}
+        </Alert>
+      )}
+      
       {updateUserError && (
         <Alert color="failure" className="mt-5">
           {updateUserError}

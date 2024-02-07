@@ -5,5 +5,6 @@ const router=express();
 router.get("/test",userController.test)
 router.post("/signup",userController.SingUp)
 router.delete("/delete/:userId",verifyToken,userController.Delete)
+router.get("/signout",userController.SingOut)
 
 export default router;
