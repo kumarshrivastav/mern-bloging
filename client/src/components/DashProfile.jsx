@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -29,12 +29,12 @@ import { signout } from "../http/api.config";
 const DashProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [imageFileUrl, setImageFileUrl] = useState(null);
-  const [userSignoutSuccess,setUserSignoutSuccess]=useState(null)
-  const [userSignoutFailure,setUserSignoutFailure]=useState(null)
+  const [userSignoutSuccess, setUserSignoutSuccess] = useState(null);
+  const [userSignoutFailure, setUserSignoutFailure] = useState(null);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
   const [updateUserError, setUpdateUserError] = useState(null);
@@ -139,22 +139,22 @@ const DashProfile = () => {
       return dispatch(deleteUserFailure(error.response.data.message));
     }
   };
-  const handleSignOut=async()=>{
-    setUserSignoutFailure(null)
-    setUserSignoutSuccess(null)
+  const handleSignOut = async () => {
+    setUserSignoutFailure(null);
+    setUserSignoutSuccess(null);
     try {
-      dispatch(signoutUserStart())
-      const {data}=await signout();
-      alert(data)
-      setUserSignoutSuccess(data)
-      navigate("/sign-in")
-      return dispatch(signoutUserSuccess())
+      dispatch(signoutUserStart());
+      const { data } = await signout();
+      alert(data);
+      setUserSignoutSuccess(data);
+      navigate("/sign-in");
+      return dispatch(signoutUserSuccess());
     } catch (error) {
-      setUserSignoutFailure(error.response.data.message)
-      dispatch(signoutUserFailure(error.response.data.message))
-      console.log(error.response.data.message)
+      setUserSignoutFailure(error.response.data.message);
+      dispatch(signoutUserFailure(error.response.data.message));
+      console.log(error.response.data.message);
     }
-  }
+  };
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -227,22 +227,40 @@ const DashProfile = () => {
             setFormData({ ...formData, password: e.target.value })
           }
         />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
+        <Button
+          type="submit"
+          gradientDuoTone="purpleToBlue"
+          outline
+          disabled={loading || imageFileUploading}
+        >
+          {loading ? "Loading..." : "Update"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"create-post"}>
+            <Button
+              type="button"
+              gradientDuoTone="purpleToPink"
+              className="w-full"
+            >
+              Creat a post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span onClick={handleSignOut} className="cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="cursor-pointer">
+          Sign Out
+        </span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
           {updateUserSuccess}
         </Alert>
       )}
-       {userSignoutSuccess && (
+      {userSignoutSuccess && (
         <Alert color="success" className="mt-5">
           {userSignoutSuccess}
         </Alert>
@@ -252,7 +270,7 @@ const DashProfile = () => {
           {userSignoutFailure}
         </Alert>
       )}
-      
+
       {updateUserError && (
         <Alert color="failure" className="mt-5">
           {updateUserError}

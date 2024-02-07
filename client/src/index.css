@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body{
+  height: 100vh;
+}
+.ql-editor{
+  font-size: 1.05rem;
+}
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
