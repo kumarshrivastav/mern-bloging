@@ -19,7 +19,7 @@ class AuthController {
         return next(ErrorHandler(400, "Invalid Password"));
       }
       const { accessToken, refreshToken } = TokenService.generateToken({
-        id: validUser._id,
+        id: validUser._id,isAdmin:validUser.isAdmin
       });
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
@@ -42,7 +42,7 @@ class AuthController {
       const user = await userModel.findOne({ email });
       if (user) {
         const { accessToken, refreshToken } = TokenService.generateToken({
-          id: user._id,
+          id: user._id,isAdmin:user.isAdmin
         });
         const { password, ...rest } = user._doc;
         res.cookie("accessToken", accessToken, {
@@ -69,7 +69,7 @@ class AuthController {
         });
         await newUser.save();
         const { accessToken, refreshToken } = TokenService.generateToken({
-          id: newUser._id,
+          id: newUser._id,isAdmin:newUser.isAdmin
         });
         res.cookie("accessToken", accessToken, {
           httpOnly: true,
