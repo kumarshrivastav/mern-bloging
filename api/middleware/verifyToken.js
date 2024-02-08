@@ -13,6 +13,7 @@ const verifyToken=(req,res,next)=>{
             return next(ErrorHandler(401,'Unauthorized'))
         }
         req.userId=payload.id;
+        req.isAdmin=payload.isAdmin
         return next()
     } catch (error) {
         return next(error)
