@@ -13,3 +13,5 @@ export const fetchpost=(postId)=>axios.get(`/api/post/getposts?postId=${postId}`
 export const updatepost=(postId,userId,data)=>axios.put(`/api/post/updatepost/${postId}/${userId}`,data)
 export const fetchusers=()=>axios.get('/api/user/getusers')
 export const showmoreusers=(startIndex)=>axios.get(`/api/user/getusers?startIndex=${startIndex}`)
+export const deleteuser=(userId)=>axios.delete(`/api/user/delete/${userId}`)
+export const deletebyadmin=(userId)=>axios.delete(`/api/user/deletebyadmin/${userId}`)

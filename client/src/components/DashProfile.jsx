@@ -25,7 +25,7 @@ import {
   updateSuccess,
 } from "../redux/user/userSlice";
 import axios from "axios";
-import { signout } from "../http/api.config";
+import { deleteuser, signout } from "../http/api.config";
 const DashProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -131,7 +131,8 @@ const DashProfile = () => {
     setShowModal(false);
     try {
       dispatch(deleteUserStart());
-      await axios.delete(`/api/user/delete/${currentUser._id}`);
+      // await axios.delete(`/api/user/delete/${currentUser._id}`);
+      await deleteuser(currentUser._id)
       // window.localStorage.removeItem('persist:root')
       // navigate("/sign-up");
       return dispatch(deleteUserSuccess());

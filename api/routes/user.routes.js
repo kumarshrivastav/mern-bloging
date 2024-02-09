@@ -7,5 +7,5 @@ router.post("/signup",userController.SingUp)
 router.delete("/delete/:userId",verifyToken,userController.Delete)
 router.get("/signout",userController.SingOut)
 router.get("/getusers",verifyToken,userController.getUsers)
-
+router.delete("/deletebyadmin/:userId",verifyToken,userController.deleteByAdmin)
 export default router;

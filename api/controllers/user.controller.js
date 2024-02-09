@@ -87,6 +87,17 @@ class UserController {
       next(error);
     }
   }
+  async deleteByAdmin(req,res,next){
+    if(!req.isAdmin){
+      return next(ErrorHandler(403,'You are not allowed to delete user'))
+    }
+    try {
+      await userModel.findByIdAndDelete(req.params.userId);
+      return res.status(200).send("User had been deleted");
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
 
 export default new UserController();

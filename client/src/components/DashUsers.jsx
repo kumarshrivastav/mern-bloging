@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Table, Modal, Button } from "flowbite-react";
-import { deletepost, fetchusers, showmoreusers } from "../http/api.config";
+import {  deletebyadmin, deleteuser, fetchusers, showmoreusers } from "../http/api.config";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCheck, FaTimes } from "react-icons/fa";
 const DashUsers = () => {
@@ -9,7 +9,6 @@ const DashUsers = () => {
   const [showMore, setShowMore] = useState(true);
   const [users, setUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showPostId, setShowPostId] = useState("");
   const [userIdToDelete, setUserIdToDelete] = useState("");
   // console.log(userPosts);
   useEffect(() => {
@@ -34,7 +33,7 @@ const DashUsers = () => {
     const startIndexex = users.length;
     try {
       const { data } = await showmoreusers(startIndexex);
-      setUserPosts((prev) => [...prev, ...data.users]);
+      setUsers((prev) => [...prev, ...data.users]);
       if (data.users.length < 9) {
         setShowMore(false);
       }
@@ -51,7 +50,15 @@ const DashUsers = () => {
 //       console.log(error.response.data.message);
 //     }
 //   };
-const handleDeleteUser=()=>{}
+const handleDeleteUser=async ()=>{
+    try {
+        await deletebyadmin(userIdToDelete)
+        setUsers((prev)=>prev.filter((user)=>user._id!==userIdToDelete))
+        setShowModal(false)
+    } catch (error) {
+        console.log(error.response.data.message)
+    }
+}
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.isAdmin && users.length > 0 ? (
