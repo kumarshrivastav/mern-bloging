@@ -6,5 +6,6 @@ router.get("/test",userController.test)
 router.post("/signup",userController.SingUp)
 router.delete("/delete/:userId",verifyToken,userController.Delete)
 router.get("/signout",userController.SingOut)
+router.get("/getUsers",verifyToken,userController.getUsers)
 
 export default router;
