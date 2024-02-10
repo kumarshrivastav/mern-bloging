@@ -126,7 +126,7 @@ const DashProfile = () => {
       }
     );
   };
-  console.log(imageFileUrl);
+  // console.log(imageFileUrl);
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
