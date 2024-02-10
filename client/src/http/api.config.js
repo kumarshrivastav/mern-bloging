@@ -16,3 +16,4 @@ export const showmoreusers=(startIndex)=>axios.get(`/api/user/getusers?startInde
 export const deleteuser=(userId)=>axios.delete(`/api/user/delete/${userId}`)
 export const deletebyadmin=(userId)=>axios.delete(`/api/user/deletebyadmin/${userId}`)
 export const postslug=(postslug)=>axios.get(`/api/post/getposts?slug=${postslug}`)
+export const createcomment=(data)=>axios.post('/api/comment/create',data)
