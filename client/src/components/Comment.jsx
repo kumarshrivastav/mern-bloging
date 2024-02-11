@@ -9,13 +9,13 @@ const Comment = ({ comment, onLike,onEdit,onDelete }) => {
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment?.content);
-  console.log(comment);
+  // console.log(comment);
   useEffect(() => {
     const getUser = async () => {
       try {
         const { data } = await getCommentUser(comment?.userId);
         setUser(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.log(error?.response?.data?.message);
       }
