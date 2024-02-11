@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Alert, Button, TextInput, Textarea } from "flowbite-react";
-import { Link,useNavigate } from "react-router-dom";
-import { createcomment, fetchcommentpost ,likecomment} from "../http/api.config";
+import { Alert, Button, Modal, TextInput, Textarea } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  createcomment,
+  deletecomment,
+  fetchcommentpost,
+  likecomment,
+} from "../http/api.config";
 import Comment from "./Comment";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
-  const navigate=useNavigate()
+  const [showModal, setShowModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+  const navigate = useNavigate();
   // console.log(comments)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +32,7 @@ const CommentSection = ({ postId }) => {
         userId: currentUser._id,
       });
       setComment("");
-      setComments([data,...comments])
+      setComments([data, ...comments]);
       console.log(data);
     } catch (error) {
       setCommentError(error.response.data.message);
@@ -42,26 +50,47 @@ const CommentSection = ({ postId }) => {
     };
     fetchPostComment();
   }, [postId]);
-  const handleLike=async (commentId)=>{
+  const handleLike = async (commentId) => {
     try {
-      if(!currentUser){
-        return navigate('/sign-in');
+      if (!currentUser) {
+        return navigate("/sign-in");
       }
-      console.log('thumb clicked')
-      const {data}=await likecomment(commentId)
-      console.log(data)
-      setComments(comments.map((comment)=>(
-        comment._id===commentId ? {
-          ...comment,likes:data.likes,numberOfLikes:data.likes.length
-        }:comment
-      )))
+      console.log("thumb clicked");
+      const { data } = await likecomment(commentId);
+      console.log(data);
+      setComments(
+        comments.map((comment) =>
+          comment._id === commentId
+            ? {
+                ...comment,
+                likes: data.likes,
+                numberOfLikes: data.likes.length,
+              }
+            : comment
+        )
+      );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  const handleEdit=async (comment,editedContent)=>(
-    setComments(comments.map((c)=>c._id===comment._id ? {...c,content:editedContent}:c))
-  )
+  };
+  const handleEdit = async (comment, editedContent) =>
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : c
+      )
+    );
+  const handleDelete = async (commentId) => {
+    try {
+      if (!currentUser) {
+        return navigate("/sign-in");
+      }
+      setShowModal(false)
+      await deletecomment(commentId);
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -110,21 +139,57 @@ const CommentSection = ({ postId }) => {
         </form>
       )}
       {commentError && <Alert color="failure">{commentError}</Alert>}
-        {comments.length===0 ? (
-          <p className="text-sm my-5">No comments yet!</p>
-        ):(
-            <>
-            <div className="text-sm my-5 flex items-center gap-1">
-              <p>Comments:</p>
-              <div className="border border-gray-400 py-1 px-2 rounded-sm">
-                <p>{comments.length}</p>
-              </div>
+      {comments.length === 0 ? (
+        <p className="text-sm my-5">No comments yet!</p>
+      ) : (
+        <>
+          <div className="text-sm my-5 flex items-center gap-1">
+            <p>Comments:</p>
+            <div className="border border-gray-400 py-1 px-2 rounded-sm">
+              <p>{comments.length}</p>
             </div>
-            {comments.map((comment)=>(
-              <Comment key={comment?._id} comment={comment} onLike={handleLike} onEdit={handleEdit}/>
-            ))}
-            </>
-        )}
+          </div>
+          {comments.map((comment) => (
+            <Comment
+              key={comment?._id}
+              comment={comment}
+              onLike={handleLike}
+              onEdit={handleEdit}
+              onDelete={(commentId) => {
+                setShowModal(true);
+                setCommentToDelete(commentId);
+              }}
+            />
+          ))}
+        </>
+      )}
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              Are you sure want to delete this comment ?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                onClick={() => handleDelete(commentToDelete)}
+              >
+                Yes, I'm sure
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

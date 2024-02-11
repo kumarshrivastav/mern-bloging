@@ -60,6 +60,21 @@ class CommentController{
             return next(error);
         }
     }
+    async deletecomment(req,res,next){
+        try {
+            const comment=await commentModel.findById(req.params.commentId)
+            if(!comment){
+                return next(ErrorHandler(404,'Comment not found!'))
+            }
+            if(comment.userId !== req.userId && !req.isAdmin){
+                return next(ErrorHandler(403,'You are not allowed to delete this comment'));
+            }
+            await commentModel.findByIdAndDelete(req.params.commentId);
+            return res.status(200).send('Comment has been deleted')
+        } catch (error) {
+            return next(error)
+        }
+    }
 }
 
 export default new CommentController;
