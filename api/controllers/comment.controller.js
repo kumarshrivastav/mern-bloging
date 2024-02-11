@@ -44,6 +44,22 @@ class CommentController{
             return next(error)
         }
     }
+    async editcomment(req,res,next){
+        try {
+            const comment=await commentModel.findById(req.params.commentId)
+            if(!comment){
+                return next(ErrorHandler(404,'Comment not found'))
+            }
+            if(comment.userId !== req.userId && !req.isAdmin){
+                return next(ErrorHandler(403,'You are not allowed to edit this comment'))
+            }
+            const editedComment=await commentModel.findByIdAndUpdate(req.params.commentId,{content:req.body.content},{new:true
+            })
+            return res.status(200).send(editedComment);
+        } catch (error) {
+            return next(error);
+        }
+    }
 }
 
 export default new CommentController;
