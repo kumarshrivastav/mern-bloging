@@ -15,6 +15,14 @@ class CommentController{
             return next(error)
         }
     }
+    async getpostcomment(req,res,next){
+        try {
+            const comments=await commentModel.find({postId:req.params.postId}).sort({createdAt:-1})
+            return res.status(200).send(comments)
+        } catch (error) {
+            return next(error)
+        }
+    }
 }
 
 export default new CommentController;

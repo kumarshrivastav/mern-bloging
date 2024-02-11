@@ -98,6 +98,18 @@ class UserController {
       return next(error);
     }
   }
+  async getUser(req,res,next){
+    try {
+      const user=await userModel.findById(req.params.userId)
+      if(!user){
+        return next(ErrorHandler(403,'User not found!'))
+      }
+      const {password,...rest}=user._doc
+      return res.status(200).send(rest)
+    } catch (error) {
+      return next(error)
+    }
+  }
 }
 
 export default new UserController();

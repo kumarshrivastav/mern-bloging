@@ -8,4 +8,5 @@ router.delete("/delete/:userId",verifyToken,userController.Delete)
 router.get("/signout",userController.SingOut)
 router.get("/getusers",verifyToken,userController.getUsers)
 router.delete("/deletebyadmin/:userId",verifyToken,userController.deleteByAdmin)
+router.get("/:userId",userController.getUser)
 export default router;
