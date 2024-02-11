@@ -23,6 +23,27 @@ class CommentController{
             return next(error)
         }
     }
+    async likecomment(req,res,next){
+        try {
+            const comment=await commentModel.findById(req.params.commentId);
+            if(!comment){
+                
+                return next(ErrorHandler(404,'Comment not found!'));
+            }
+            const userIndex=comment.likes.indexOf(req.userId)
+            if(userIndex===-1){
+                comment.numberOfLikes+=1
+                comment.likes.push(req.userId)
+            }else{
+                comment.numberOfLikes-=1
+                comment.likes.splice(userIndex,1)
+            }
+            const savedComment=await comment.save()
+            return res.status(200).send(savedComment)
+        } catch (error) {
+            return next(error)
+        }
+    }
 }
 
 export default new CommentController;

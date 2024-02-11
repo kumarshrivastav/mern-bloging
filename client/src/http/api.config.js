@@ -19,3 +19,4 @@ export const postslug=(postslug)=>axios.get(`/api/post/getposts?slug=${postslug}
 export const createcomment=(data)=>axios.post('/api/comment/create',data)
 export const fetchcommentpost=(postId)=>axios.get(`/api/comment/getpostcomment/${postId}`)
 export const getUser=(userId)=>axios.get(`/api/user/${userId}`)
+export const likecomment=(commentId)=>axios.get(`/api/comment/likecomment/${commentId}`)

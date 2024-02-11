@@ -5,4 +5,5 @@ const router=express.Router()
 
 router.post("/create",verifyToken,commentController.create)
 router.get("/getpostcomment/:postId",commentController.getpostcomment)
+router.get("/likecomment/:commentId",verifyToken,commentController.likecomment)
 export default router
