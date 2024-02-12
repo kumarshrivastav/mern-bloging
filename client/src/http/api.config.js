@@ -23,3 +23,4 @@ export const likecomment=(commentId)=>axios.get(`/api/comment/likecomment/${comm
 export const editcomment=(commentId,data)=>axios.put(`/api/comment/editcomment/${commentId}`,data)
 export const deletecomment=(commentId)=>axios.delete(`/api/comment/deletecomment/${commentId}`)
 export const fetchrecentposts=()=>axios.get("/api/post/getposts?limit=3")
+export const fetchcomments=(startIndex)=>axios.get(`/api/comment/getcomments?startIndex=${startIndex}`)

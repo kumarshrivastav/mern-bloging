@@ -20,4 +20,5 @@ router.delete(
   verifyToken,
   commentController.deletecomment
 );
+router.get('/getcomments',verifyToken,commentController.getComments)
 export default router;
