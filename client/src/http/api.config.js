@@ -24,3 +24,6 @@ export const editcomment=(commentId,data)=>axios.put(`/api/comment/editcomment/$
 export const deletecomment=(commentId)=>axios.delete(`/api/comment/deletecomment/${commentId}`)
 export const fetchrecentposts=()=>axios.get("/api/post/getposts?limit=3")
 export const fetchcomments=(startIndex)=>axios.get(`/api/comment/getcomments?startIndex=${startIndex}`)
+export const getfiveusers=(limit)=>axios.get(`/api/user/getusers?limit=${limit}`)
+export const getfiveposts=(limit)=>axios.get(`/api/post/getposts?limit=${limit}`)
+export const getfivecomments=(limit)=>axios.get(`/api/comment/getcomments?limit=${limit}`)
