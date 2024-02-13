@@ -27,3 +27,4 @@ export const fetchcomments=(startIndex)=>axios.get(`/api/comment/getcomments?sta
 export const getfiveusers=(limit)=>axios.get(`/api/user/getusers?limit=${limit}`)
 export const getfiveposts=(limit)=>axios.get(`/api/post/getposts?limit=${limit}`)
 export const getfivecomments=(limit)=>axios.get(`/api/comment/getcomments?limit=${limit}`)
+export const fetchposts=()=>axios.get("/api/post/getposts?limit=9")

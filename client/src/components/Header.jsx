@@ -25,7 +25,7 @@ const handleSignOut=async()=>{
   try {
     dispatch(signoutUserStart())
     const {data}=await signout();
-    navigate("/sign-in")
+    navigate("/")
     return dispatch(signoutUserSuccess())
   } catch (error) {
     dispatch(signoutUserFailure(error.response.data.message))
