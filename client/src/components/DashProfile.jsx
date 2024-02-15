@@ -25,7 +25,7 @@ import {
   updateSuccess,
 } from "../redux/user/userSlice";
 import axios from "axios";
-import { deleteuser, signout } from "../http/api.config";
+import { deleteuser, signout, update } from "../http/api.config";
 const DashProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ const DashProfile = () => {
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
     if (Object.keys(formData).length === 0) {
-      setUpdateUserError("No needs to change");
+      setUpdateUserError("Nothing changed");
       return;
     }
     if (imageFileUploading) {
@@ -66,10 +66,7 @@ const DashProfile = () => {
     }
     try {
       dispatch(updateStart());
-      const { data } = await axios.put(
-        `/api/auth/update/${currentUser._id}`,
-        formData
-      );
+      const {data}=await update(currentUser._id,formData)
       console.log(data);
       dispatch(updateSuccess(data));
       return setUpdateUserSuccess("User updated successfully");

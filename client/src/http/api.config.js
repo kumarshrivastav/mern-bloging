@@ -1,12 +1,10 @@
 import axios from 'axios';
-// import {useSelector} from "react-redux"
-// const {currentUser}=useSelector(state=>state.user)
 export const signUp=(data)=>axios.post("/api/user/signup",data)
 export const signin=(data)=>axios.post("/api/auth/signin",data)
 export const oauth=(data)=>axios.post("/api/auth/oauth",data)
 export const signout=()=>axios.get("/api/user/signout")
 export const createpost=(data)=>axios.post("/api/post/create-post",data)
-// export const update=(data)=>axios.put(`/api/auth/update/${currentUser._id}`,data)
+export const update=(userId,data)=>axios.put(`/api/auth/update/${userId}`,data)
 export const showmore=(currentUserId,startIndex)=>axios.get(`/api/post/getposts?userId${currentUserId}&startIndex=${startIndex}`)
 export const deletepost=(postId,userId)=>axios.delete(`/api/post/deletepost/${postId}/${userId}`)
 export const fetchpost=(postId)=>axios.get(`/api/post/getposts?postId=${postId}`)
@@ -28,3 +26,4 @@ export const getfiveusers=(limit)=>axios.get(`/api/user/getusers?limit=${limit}`
 export const getfiveposts=(limit)=>axios.get(`/api/post/getposts?limit=${limit}`)
 export const getfivecomments=(limit)=>axios.get(`/api/comment/getcomments?limit=${limit}`)
 export const fetchposts=()=>axios.get("/api/post/getposts?limit=9")
+export const fetchpostswithsrquery=(searchQuery)=>axios.get(`/api/post/getposts?${searchQuery}`)
