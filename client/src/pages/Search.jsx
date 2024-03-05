@@ -33,7 +33,6 @@ const Search = () => {
         setLoading(true);
         const searchQuery = urlParams.toString();
         const { data } = await fetchpostswithsrquery(searchQuery);
-        console.log(data);
         setPosts(data.posts);
         setLoading(false);
         if (data.posts.length === 9) {
@@ -48,7 +47,6 @@ const Search = () => {
     };
     fetchPosts();
   }, [location.search]);
-  console.log(sidebarData);
   const handleShowMore=async()=>{
     try {
         const numberOfPosts=posts.length

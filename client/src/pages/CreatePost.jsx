@@ -13,6 +13,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { createpost } from "../http/api.config.js";
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify";
 const CreatePost = () => {
   const [files, setFiles] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
@@ -63,9 +64,11 @@ const CreatePost = () => {
     try {
       const {data}=await createpost(formData)
       console.log(data)
+      toast.success('New Post Added!')
       return navigate(`/post/${data.slug}`)
     } catch (error) {
       setPublishError(error.response.data.message)
+      toast.error(error.response.data.message)
     }
   }
   return (

@@ -1,5 +1,6 @@
 import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 import {
   getDownloadURL,
   getStorage,
@@ -41,7 +42,6 @@ const UpdatePost = () => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUploadProgress(progress.toFixed(0));
-          console.log(progress.toFixed(0));
         },
         (error) => {
           setImageUploadError("Image upload failed");
@@ -58,7 +58,6 @@ const UpdatePost = () => {
     } catch (error) {
       setImageUploadError("Image upload failed");
       setImageUploadProgress(null);
-      console.log(error);
     }
   };
   useEffect(() => {
@@ -77,13 +76,12 @@ const UpdatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        // console.log("postId:"+formData._id,"\nuserId:"+currentUser._id,"\ndata:"+formData)
-        console.log(formData)
       const { data } = await updatepost(postId,currentUser._id,formData);
-      console.log(data);
       setPublishError(null)
-      return navigate(`/dashboard/post/${data.slug}`);
+      toast.success('Post Updated Successfully!')
+      return navigate(`/post/${data.slug}`);
     } catch (error) {
+      toast.error(error.response.data.message)
       setPublishError(error.response.data.message);
     }
   };

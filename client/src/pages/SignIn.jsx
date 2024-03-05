@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { signin } from "../http/api.config";
+import {  toast } from 'react-toastify';
 import {useDispatch,useSelector} from "react-redux"
 import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
@@ -22,12 +23,12 @@ const SignIn = () => {
     try {
       dispatch(signInStart())
       const { data } = await signin(formData)
-      console.log(data);
       dispatch(signInSuccess(data))
       setFormData({password: "", email: "" });
-      alert("User Login Successfully");
+      toast.success("User Login Successfully");
       return navigate("/");
     } catch (error) {
+      toast.error(error.response.data.message)
       dispatch(signInFailure(error.response.data.message))
     }
   };

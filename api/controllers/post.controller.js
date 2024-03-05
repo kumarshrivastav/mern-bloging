@@ -91,7 +91,6 @@ class PostController {
         },
         { new: true }
       );
-      console.log(updatedPost)
       return res.status(200).send(updatedPost)
     } catch (error) {
     return next(error)

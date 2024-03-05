@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
 import { signUp } from "../http/api.config";
+import { toast } from 'react-toastify';
 import OAuth from "../components/OAuth";
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -22,13 +23,12 @@ const SignUp = () => {
       setIsLoading(true);
       setErrorMessage(null);
       const { data } = await signUp(formData);
-      console.log(data);
       setFormData({ username: "", password: "", email: "" });
-      alert("User Registered Successfully");
+      toast.success("User Registered Successfully");
       return navigate("/sign-in");
     } catch (error) {
       setErrorMessage(error.response.data.message);
-      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       setIsLoading(false);
     }

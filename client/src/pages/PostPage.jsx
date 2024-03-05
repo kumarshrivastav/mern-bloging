@@ -12,7 +12,6 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [recentPosts,setRecentPosts]=useState(null);
   useEffect(() => {
-    console.log(postSlug);
     const fetchPost = async () => {
       try {
         setLoading(true);
@@ -34,7 +33,6 @@ const PostPage = () => {
       try {
         const {data}=await fetchrecentposts();
         setRecentPosts(data.posts)
-        console.log(data)
       } catch (error) {
         console.log(error.response.data.message)
       }
@@ -53,7 +51,7 @@ const PostPage = () => {
         {post && post.title}
       </h1>
       <Link
-        to={`search?category=${post && post.category}`}
+        to={`/search?category=${post && post.category}`}
         className="self-center mt-5"
       >
         <Button color="gray" pill size={"xs"}>
